@@ -1,4 +1,91 @@
+<section class="py-10">
+  <div class="flex flex-wrap justify-center gap-6">
+    {% for product in collection.products %}
 
-{% for product in collection.products %}
-  {{ product | json }}
-{% endfor %}
+      <article class="flex w-full max-w-[306px] flex-col rounded-[12px] bg-white shadow-sm">
+        <a href="/products/{{ product.handle }}">
+          <div class="relative bg-[#F5F5F5]">
+            {%- if product.media and product.media[0] and product.media[0].src -%}
+              {{ product.media[0].src
+                | image_tag: alt: product.title,
+                  class: 'h-full w-full object-cover' }}
+            {%- endif -%}
+
+            {%- if product.tags contains 'Best Seller' -%}
+              <span class="absolute left-3 top-3 rounded-full bg-[#09121F] px-3 py-1 text-[11px] text-white">
+                Bestseller
+              </span>
+            {%- endif -%}
+
+            <div class="absolute inset-x-0 bottom-3 flex justify-center gap-1">
+              <span class="h-[6px] w-4 rounded-full bg-[#09121F]"></span>
+              <span class="h-[6px] w-[6px] rounded-full bg-[#09121F]/20"></span>
+              <span class="h-[6px] w-[6px] rounded-full bg-[#09121F]/20"></span>
+            </div>
+          </div>
+        </a>
+
+        <div class="flex-1 px-6 pt-6">
+          <a href="/products/{{ product.handle }}" class="block mb-1">
+            <h3 class="text-[16px] font-semibold text-[#09121F]">
+              {{ product.title }}
+            </h3>
+          </a>
+
+          {%- if product.content -%}
+            <p class="mb-3 text-[14px] text-[#09121F]">
+              {{ product.content | strip_html }}
+            </p>
+          {%- endif -%}
+
+          <div class="mb-2 flex items-baseline gap-2">
+            <span class="text-[20px] font-normal text-[#09121F]">
+              {{ product.price | money }}
+            </span>
+
+            {%- if product.compare_at_price and product.compare_at_price > product.price -%}
+              <span class="text-[13px] text-neutral-500 line-through">
+                {{ product.compare_at_price | money }}
+              </span>
+            {%- endif -%}
+          </div>
+
+          {%- if product.compare_at_price and product.compare_at_price > product.price -%}
+            <div class="mb-3 flex gap-2">
+              <span class="rounded-full bg-[#FFE5E5] px-2 py-[2px] text-[12px] border border-[#EB0000] line-through">
+                Was {{ product.compare_at_price | money }}
+              </span>
+              <span class="rounded-full bg-[#E5F8E8] px-2 py-[2px] text-[12px] border border-[#00920A]">
+                Save £4.00
+              </span>
+            </div>
+          {%- endif -%}
+
+          <div class="mb-4 flex items-center gap-2 text-[12px] text-[#09121F]">
+            <span>30g Protein</span>
+            <span class="h-[4px] w-[4px] rounded-full bg-[#09121F]"></span>
+            <span>Low Calories</span>
+            <span class="h-[4px] w-[4px] rounded-full bg-[#09121F]"></span>
+            <span>Low Sugar</span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 p-6 pt-0">
+          <div class="flex h-[53px] items-center gap-4 rounded-xl border border-[#09121F] px-3">
+            <button type="button" class="text-sm text-[#09121F]">–</button>
+            <span class="text-sm text-[#09121F]">1</span>
+            <button type="button" class="text-sm text-[#09121F]">+</button>
+          </div>
+
+          <button
+            type="button"
+            class="flex h-[53px] flex-1 items-center justify-center rounded-xl bg-[#09121F] text-[16px] font-semibold text-white"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </article>
+
+    {% endfor %}
+  </div>
+</section>
